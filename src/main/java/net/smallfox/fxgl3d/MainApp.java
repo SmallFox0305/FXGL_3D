@@ -1,0 +1,79 @@
+package net.smallfox.fxgl3d;
+
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.Camera3D;
+import javafx.geometry.Point3D;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import net.smallfox.fxgl3d.components.GameEntityFactory;
+
+import static com.almasb.fxgl.dsl.FXGL.*;
+
+public class MainApp extends GameApplication {
+
+    Camera3D camera3D;
+
+    private double speed = .5;
+
+    @Override
+    protected void initSettings(GameSettings gameSettings) {
+        gameSettings.set3D(true);
+        gameSettings.setWidth(1920);
+        gameSettings.setHeight(1080);
+        gameSettings.setFullScreenAllowed(true);
+        gameSettings.setFullScreenFromStart(true);
+    }
+
+    @Override
+    protected void initInput() {
+        onKey(KeyCode.UP, () -> camera3D.getTransform().setRotationX(camera3D.getTransform().getRotationX() + speed));
+        onKey(KeyCode.DOWN, () -> camera3D.getTransform().setRotationX(camera3D.getTransform().getRotationX() - speed));
+        onKey(KeyCode.RIGHT, () -> camera3D.getTransform().setRotationY(camera3D.getTransform().getRotationY() + speed));
+        onKey(KeyCode.LEFT, () -> camera3D.getTransform().setRotationY(camera3D.getTransform().getRotationY() - speed));
+
+        onKey(KeyCode.W, () -> moveCameraLocal(0, 0, speed));
+        onKey(KeyCode.S, () -> moveCameraLocal(0, 0, -speed));
+        onKey(KeyCode.A, () -> moveCameraLocal(-speed, 0, 0));
+        onKey(KeyCode.D, () -> moveCameraLocal(speed, 0, 0));
+    }
+
+    private void moveCameraLocal(double dx, double dy, double dz) {
+        double yaw = Math.toRadians(camera3D.getTransform().getRotationY());
+
+        // 前后移动（Z轴）
+        double forwardX = Math.sin(yaw);
+        double forwardZ = Math.cos(yaw);
+
+        // 左右移动（X轴）
+        double rightX = Math.cos(yaw);
+        double rightZ = -Math.sin(yaw);
+
+        double moveX = dx * rightX + dz * forwardX;
+        double moveZ = dx * rightZ + dz * forwardZ;
+
+        camera3D.getTransform().setX(camera3D.getTransform().getX() + moveX);
+        camera3D.getTransform().setZ(camera3D.getTransform().getZ() + moveZ);
+    }
+
+    @Override
+    protected void initGame() {
+        camera3D = getGameScene().getCamera3D();
+
+//        camera3D.getTransform().setRotationX(5);
+//        camera3D.getTransform().setRotationX(45);
+
+//        camera3D.getTransform().setY(5);
+//        camera3D.getTransform().setX(-5);
+//        camera3D.getTransform().setZ(-2);
+
+//        camera3D.getTransform().setPosition3D(0, 10, 10);
+
+        getGameWorld().addEntityFactory(new GameEntityFactory());
+        spawn("3dCube", 0, 0);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
