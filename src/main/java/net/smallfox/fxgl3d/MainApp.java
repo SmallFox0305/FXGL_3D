@@ -3,9 +3,7 @@ package net.smallfox.fxgl3d;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.Camera3D;
-import javafx.geometry.Point3D;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import net.smallfox.fxgl3d.components.GameEntityFactory;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -14,7 +12,7 @@ public class MainApp extends GameApplication {
 
     Camera3D camera3D;
 
-    private double speed = 1.4;
+    private double speed = 3;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -27,10 +25,10 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initInput() {
-        onKey(KeyCode.UP, () -> camera3D.getTransform().setRotationX(camera3D.getTransform().getRotationX() + speed));
-        onKey(KeyCode.DOWN, () -> camera3D.getTransform().setRotationX(camera3D.getTransform().getRotationX() - speed));
-        onKey(KeyCode.RIGHT, () -> camera3D.getTransform().setRotationY(camera3D.getTransform().getRotationY() + speed));
-        onKey(KeyCode.LEFT, () -> camera3D.getTransform().setRotationY(camera3D.getTransform().getRotationY() - speed));
+        onKey(KeyCode.UP, () -> camera3D.getTransform().setRotationX(camera3D.getTransform().getRotationX() + speed / 2));
+        onKey(KeyCode.DOWN, () -> camera3D.getTransform().setRotationX(camera3D.getTransform().getRotationX() - speed / 2));
+        onKey(KeyCode.RIGHT, () -> camera3D.getTransform().setRotationY(camera3D.getTransform().getRotationY() + speed / 2));
+        onKey(KeyCode.LEFT, () -> camera3D.getTransform().setRotationY(camera3D.getTransform().getRotationY() - speed / 2));
 
         onKey(KeyCode.W, () -> moveCameraLocal(0, 0, speed));
         onKey(KeyCode.S, () -> moveCameraLocal(0, 0, -speed));
@@ -80,8 +78,9 @@ public class MainApp extends GameApplication {
 
         getGameWorld().addEntityFactory(new GameEntityFactory());
 //        spawn("3dCube", 0, 0);
-        spawn("obj", 0, -100, 0);
-        spawn("obj", 0, -100, 220);
+        for (int i = 0; i < 20; i++) {
+            spawn("obj", 0, -100, i * 220);
+        }
     }
 
     public static void main(String[] args) {
