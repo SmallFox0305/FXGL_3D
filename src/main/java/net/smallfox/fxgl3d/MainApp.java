@@ -34,8 +34,8 @@ public class MainApp extends GameApplication {
         onKey(KeyCode.A, () -> moveCameraLocal(-speed, 0, 0));
         onKey(KeyCode.D, () -> moveCameraLocal(speed, 0, 0));
 
-        onKey(KeyCode.Q, () -> moveCameraLocal(0, -speed, 0));
-        onKey(KeyCode.E, () -> moveCameraLocal(0, speed, 0));
+        onKey(KeyCode.Q, () -> moveCameraLocal(0, speed, 0));
+        onKey(KeyCode.E, () -> moveCameraLocal(0, -speed, 0));
     }
 
     private void moveCameraLocal(double dx, double dy, double dz) {
@@ -49,17 +49,13 @@ public class MainApp extends GameApplication {
         double rightX = Math.cos(yaw);
         double rightZ = -Math.sin(yaw);
 
-        // 上下移动
-        double upY = Math.cos(yaw);
-        double downY = Math.sin(yaw);
-
         double moveX = dx * rightX + dz * forwardX;
         double moveZ = dx * rightZ + dz * forwardZ;
-        double moveY = dy * upY + dy * downY;
 
         camera3D.getTransform().setX(camera3D.getTransform().getX() + moveX);
         camera3D.getTransform().setZ(camera3D.getTransform().getZ() + moveZ);
-        camera3D.getTransform().setY(camera3D.getTransform().getY() + moveY);
+
+        camera3D.getTransform().setY(camera3D.getTransform().getY() + dy);
     }
 
     @Override
