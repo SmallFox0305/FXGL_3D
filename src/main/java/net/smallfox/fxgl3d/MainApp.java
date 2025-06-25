@@ -14,15 +14,15 @@ public class MainApp extends GameApplication {
 
     Camera3D camera3D;
 
-    private double speed = .5;
+    private double speed = 1.4;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.set3D(true);
-        gameSettings.setWidth(1920);
-        gameSettings.setHeight(1080);
-        gameSettings.setFullScreenAllowed(true);
-        gameSettings.setFullScreenFromStart(true);
+        gameSettings.setWidth(1280);
+        gameSettings.setHeight(720);
+//        gameSettings.setFullScreenAllowed(true);
+//        gameSettings.setFullScreenFromStart(true);
     }
 
     @Override
@@ -36,6 +36,9 @@ public class MainApp extends GameApplication {
         onKey(KeyCode.S, () -> moveCameraLocal(0, 0, -speed));
         onKey(KeyCode.A, () -> moveCameraLocal(-speed, 0, 0));
         onKey(KeyCode.D, () -> moveCameraLocal(speed, 0, 0));
+
+        onKey(KeyCode.Q, () -> moveCameraLocal(0, -speed, 0));
+        onKey(KeyCode.E, () -> moveCameraLocal(0, speed, 0));
     }
 
     private void moveCameraLocal(double dx, double dy, double dz) {
@@ -49,11 +52,17 @@ public class MainApp extends GameApplication {
         double rightX = Math.cos(yaw);
         double rightZ = -Math.sin(yaw);
 
+        // 上下移动
+        double upY = Math.cos(yaw);
+        double downY = Math.sin(yaw);
+
         double moveX = dx * rightX + dz * forwardX;
         double moveZ = dx * rightZ + dz * forwardZ;
+        double moveY = dy * upY + dy * downY;
 
         camera3D.getTransform().setX(camera3D.getTransform().getX() + moveX);
         camera3D.getTransform().setZ(camera3D.getTransform().getZ() + moveZ);
+        camera3D.getTransform().setY(camera3D.getTransform().getY() + moveY);
     }
 
     @Override
@@ -70,7 +79,9 @@ public class MainApp extends GameApplication {
 //        camera3D.getTransform().setPosition3D(0, 10, 10);
 
         getGameWorld().addEntityFactory(new GameEntityFactory());
-        spawn("3dCube", 0, 0);
+//        spawn("3dCube", 0, 0);
+        spawn("obj", 0, -100, 0);
+        spawn("obj", 0, -100, 220);
     }
 
     public static void main(String[] args) {
