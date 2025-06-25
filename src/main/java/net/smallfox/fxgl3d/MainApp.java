@@ -3,6 +3,7 @@ package net.smallfox.fxgl3d;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.Camera3D;
+import com.almasb.fxgl.entity.SpawnData;
 import javafx.scene.input.KeyCode;
 import net.smallfox.fxgl3d.components.GameEntityFactory;
 
@@ -19,8 +20,6 @@ public class MainApp extends GameApplication {
         gameSettings.set3D(true);
         gameSettings.setWidth(1280);
         gameSettings.setHeight(720);
-//        gameSettings.setFullScreenAllowed(true);
-//        gameSettings.setFullScreenFromStart(true);
     }
 
     @Override
@@ -66,20 +65,24 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGame() {
         camera3D = getGameScene().getCamera3D();
-
-//        camera3D.getTransform().setRotationX(5);
-//        camera3D.getTransform().setRotationX(45);
-
-//        camera3D.getTransform().setY(5);
-//        camera3D.getTransform().setX(-5);
-//        camera3D.getTransform().setZ(-2);
-
-//        camera3D.getTransform().setPosition3D(0, 10, 10);
+        camera3D.getTransform().setZ(-230);
+        camera3D.getTransform().setX(150);
 
         getGameWorld().addEntityFactory(new GameEntityFactory());
 //        spawn("3dCube", 0, 0);
-        for (int i = 0; i < 20; i++) {
-            spawn("obj", 0, -100, i * 220);
+        for (int i = 0; i < 10; i++) {
+            spawn("maimai",
+                    new SpawnData(0, -100, i * 220)
+                            .put("rotateX", 180)
+            );
+        }
+
+        for (int i = 0; i < 10; i++) {
+            spawn("maimai",
+                    new SpawnData(300, -100, i * 220)
+                            .put("rotateX", 180)
+                            .put("rotateZ", 180)
+            );
         }
     }
 

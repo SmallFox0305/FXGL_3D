@@ -14,7 +14,7 @@ public class GameEntityFactory implements EntityFactory {
 
     @Spawns("3dCube")
     public Entity new3dCube(SpawnData data) {
-        Box box = new Box(1, 1, 1);
+        Box box = new Box(100, 100, 100);
         box.getTransforms().add(new Rotate(45, Rotate.X_AXIS));
         box.getTransforms().add(new Rotate(45, Rotate.Y_AXIS));
         return FXGL.entityBuilder(data)
@@ -22,7 +22,7 @@ public class GameEntityFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("obj")
+    @Spawns("maimai")
     public Entity newObj(SpawnData data) {
         Node model = FXGL.getAssetLoader().loadModel3D("maimai.obj");
 
@@ -32,7 +32,11 @@ public class GameEntityFactory implements EntityFactory {
 //        model.setScaleZ(3);
 
         model.setRotationAxis(Rotate.X_AXIS);
-        model.setRotate(180);
+        model.setRotate(Double.parseDouble(data.getData().get("rotateX").toString()));
+        if (data.getData().get("rotateZ") != null) {
+            model.setRotationAxis(Rotate.Z_AXIS);
+            model.setRotate(Double.parseDouble(data.getData().get("rotateZ").toString()));
+        }
 
         return FXGL.entityBuilder(data)
                 .view(model)
